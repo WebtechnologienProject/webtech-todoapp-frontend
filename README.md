@@ -1,4 +1,5 @@
 # webtech-todoapp-frontend
+[![CI](https://github.com/WebtechnologienProject/webtech-todoapp-frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/WebtechnologienProject/webtech-todoapp-frontend/actions/workflows/ci.yml)
 
 ## Project setup
 ```
@@ -27,3 +28,5 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+

@@ -25,18 +25,9 @@
             <input type="text" class="form-control"  placeholder="Enter your description" id="description" v-model="description" required>
           </div>
         </div>
-
-<!--        <div class="col-12">-->
-<!--          <label class="form-label" for="category">Category</label>-->
-<!--          <div class="input-group">-->
-<!--            <input type="range" class="form-control" id="category" placeholder="Category" v-model="category.categoryTitle">-->
-<!--            <select id="category" name="category" form="category">-->
-<!--              <option v-bind="category in categories" :key="category.categoryId"> {{ category.categoryTitle }} </option>-->
-<!--              </select>-->
-<!--          </div>-->
           <div class="col-12">
             <label for="category" class="form-label">Category</label>
-            <select id="selectedCategory" class="form-select" v-model="selectedCategory.categoryId">
+            <select id="selectedCategory" class="form-select" v-model="selectedCategory.categoryId" required>
               <option value="" selected disabled> Choose...</option>
               <option v-for="cat in categories" :key="cat.categoryId" v-bind:value="cat.categoryId"> {{ cat.categoryTitle }} </option>
             </select>

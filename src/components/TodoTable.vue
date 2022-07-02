@@ -2,7 +2,7 @@
   <table class="table table-bordered mt-5">
     <thead>
     <tr>
-      <th scope="col">Task</th>
+      <th scope="col">###</th>
       <th scope="col">Title</th>
       <th scope="col">Description</th>
       <th scope="col">Category</th>
@@ -17,17 +17,16 @@
       <th scope="row">
         <div class="form-check">
         <input class="form-check-input" type="checkbox" value="done" id="flexCheckDefault">
-        <label class="form-check-label" for="flexCheckDefault">
-        </label>
-      </div>
+        <label class="form-check-label" for="flexCheckDefault"></label>
+        </div>
       </th>
       <td> {{ todo.title }} </td>
       <td> {{ todo.description }} </td>
       <td> {{ todo.category.categoryTitle }} </td>
       <td>
-        <button style="margin-left: 10px" @click="editTask">✏️</button>
-        <button style="margin-left: 10px" @click="toMyDay"> 🌞 </button>
-        <button style="margin-left: 10px" @click="deleteTask">❌ </button>
+        <button style="margin-left: 10px"> ✏️</button>
+        <button style="margin-left: 10px"> 🌞 </button>
+        <button style="margin-left: 10px" @click="deleteTask(todos, todo.todoId)"> ❌ </button>
       </td>
     </tr>
     </tbody>
@@ -37,6 +36,7 @@
 <script>
 export default {
   name: 'TodoTable',
+  components: { },
   props: {
     todos: {
       type: Array,
@@ -45,19 +45,22 @@ export default {
   },
   data () {
     return {
-      title: this.title,
-      description: this.description,
-      category: {
-        categoryId: this.categoryId,
-        categoryTitle: this.categoryTitle
-      },
-      done: false
     }
   },
   methods: {
     editTask () {
     },
-    deleteTask () {
+    deleteTask (todos, todoId) {
+      const endpoint = `${process.env.VUE_APP_BACKEND_BASE_URL}/api/todo`
+      const requestOptions = {
+        method: 'DELETE',
+        redirect: 'follow'
+      }
+      fetch(endpoint + '/' + todoId, requestOptions)
+        .catch((error) => console.log('error', error))
+      if (todoId > -1) {
+        todos.splice(todoId, 1)
+      }
     },
     toMyDay () {
     },

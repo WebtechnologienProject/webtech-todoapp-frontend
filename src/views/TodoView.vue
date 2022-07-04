@@ -9,7 +9,6 @@
   <div class="row mt-2">
     <todo-table :todos="checkTodos(todos,true)" @delete-task="deleteTask" @set-done="setDone" @set-myDay="setMyDay"></todo-table>
   </div>
-  <div>{{todoData}}</div>
 </template>
 
 <script>
@@ -21,8 +20,7 @@ export default {
   data () {
     return {
       todos: [],
-      categories: [],
-      todoData: null
+      categories: []
     }
   },
   methods: {

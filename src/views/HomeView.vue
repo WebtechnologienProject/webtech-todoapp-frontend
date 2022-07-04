@@ -6,7 +6,7 @@
   </div>
   <h5>Done tasks</h5>
   <div class="row mt-2">
-    <todo-table :todos="checkTodos(todos,true)" @delete-task="deleteTask" @set-done="setDone(todos.todoId)"></todo-table>
+    <todo-table :todos="checkTodos(todos,true)" @delete-task="deleteTask" @set-done="setDone"></todo-table>
   </div>
 </template>
 

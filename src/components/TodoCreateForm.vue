@@ -78,9 +78,7 @@ export default {
     createTodo () {
       const valid = this.validate()
       if (valid) {
-        // const baseUrl = process.env.VUE_APP_BACKEND_BASE_URL
-        // const endpoint = baseUrl + '/api/todoo
-        const endpoint = process.env.VUE_APP_BACKEND_BASE_URL
+        const endpoint = process.env.VUE_APP_BACKEND_BASE_URL + '/api/todoo'
         console.log('New todo Created')
         const myHeaders = new Headers()
         myHeaders.append('Content-Type', 'application/json')

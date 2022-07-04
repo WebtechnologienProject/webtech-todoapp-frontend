@@ -3,11 +3,11 @@
   <todo-create-form :categories="this.categories"></todo-create-form>
   <div class="row mt-2">
     <p class="for-do">New todos for doing:</p>
-    <todo-table :todos="checkTodos(todos,false)" @delete-task="deleteTask" @set-done="setDone(todos.todoId)"></todo-table>
+    <todo-table :todos="checkTodos(todos,false)" @delete-task="deleteTask" @set-done="setDone"></todo-table>
   </div>
   <h5>Done tasks</h5>
   <div class="row mt-2">
-    <todo-table :todos="checkTodos(todos,true)" @delete-task="deleteTask" @set-done="setDone(todos.todoId)"></todo-table>
+    <todo-table :todos="checkTodos(todos,true)" @delete-task="deleteTask" @set-done="setDone"></todo-table>
   </div>
   <div>{{todoData}}</div>
 </template>

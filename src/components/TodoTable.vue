@@ -15,18 +15,17 @@
     </tr>
     <tr class="col" v-for="todo in todos" :key="todo.todoId">
       <th scope="row">
-        <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="done" id="flexCheckDefault">
-        <label class="form-check-label" for="flexCheckDefault"></label>
+        <div class="form-check" v-if="!todo.done">
+          <button @click="setDone">✅</button>
         </div>
       </th>
       <td> {{ todo.title }} </td>
       <td> {{ todo.description }} </td>
       <td> {{ todo.category.categoryTitle }} </td>
       <td>
-        <button style="margin-left: 10px"> ✏️</button>
-        <button style="margin-left: 10px"> 🌞 </button>
-        <button style="margin-left: 10px" @click="deleteTask(todos, todo.todoId)"> ❌ </button>
+        <button style="margin-left: 10px" @click="editTask(todos, todo.todoId)"> ✏️</button>
+        <button style="margin-left: 10px" v-if="!todo.myDay" @click="setMyDay(todo.todoId)"> 🌞 </button>
+        <button type="button" style="margin-left: 10px" @click="deleteTask(todo.todoId)"> ❌ </button>
       </td>
     </tr>
     </tbody>
@@ -40,35 +39,25 @@ export default {
   props: {
     todos: {
       type: Array,
-      required: true
-    }
-  },
-  data () {
-    return {
+      required: true,
+      categories: {
+        type: Array,
+        required: true
+      }
     }
   },
   methods: {
-    editTask () {
+    setMyDay (todoId) {
+      this.$emit('set-myDay', todoId)
     },
-    deleteTask (todos, todoId) {
-      const endpoint = `${process.env.VUE_APP_BACKEND_BASE_URL}/api/todo`
-      const requestOptions = {
-        method: 'DELETE',
-        redirect: 'follow'
-      }
-      fetch(endpoint + '/' + todoId, requestOptions)
-        .catch((error) => console.log('error', error))
-      if (todoId > -1) {
-        todos.splice(todoId, 1)
-      }
+    setDone (todoId) {
+      this.$emit('set-done', todoId)
     },
-    toMyDay () {
+    deleteTask (todoId) {
+      this.$emit('delete-task', todoId)
     },
-    doneTask () {
-      this.done = []
-      for (const i in this.todos) {
-        this.done.push(this.todos[i].todoId)
-      }
+    editTask (todoId) {
+      this.$emit('edit-task', todoId)
     }
   }
 }

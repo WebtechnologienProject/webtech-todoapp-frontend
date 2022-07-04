@@ -5,7 +5,7 @@
   <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
     <div class="offcanvas-header">
       <h5 class="offcanvas-title" id="offcanvasBottomLabel">Adding new todo</h5>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      <button type="button" id="close-offcanvas" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
       <form class="row row-cols-lg-auto needs-validation g-3 align-items-center" id="todo-create-form" novalidate>
@@ -43,7 +43,13 @@
             </label>
           </div>
         </div>
-
+        <div v-if="this.serverValidationMessages">
+          <ul>
+            <li v-for="(message, index) in serverValidationMessages" :key="index" style="color: red">
+              {{ message }}
+            </li>
+          </ul>
+        </div>
         <div class="btn-group" role="group" aria-label="Basic mixed styles example">
           <button type="submit" class="btn btn-success" @click="createTodo">Submit</button>
           <button type="reset" class="btn btn-danger">Reset</button>
@@ -70,16 +76,16 @@ export default {
         categoryId: '',
         categoryTitle: ''
       }],
-      myDay: false
+      myDay: false,
+      serverValidationMessages: []
     }
   },
   emits: ['created'],
   methods: {
-    createTodo () {
+    async createTodo () {
       const valid = this.validate()
       if (valid) {
-        const endpoint = process.env.VUE_APP_BACKEND_BASE_URL + '/api/todoo'
-        console.log('New todo Created')
+        const endpoint = process.env.VUE_APP_BACKEND_BASE_URL + '/api/todo'
         const myHeaders = new Headers()
         myHeaders.append('Content-Type', 'application/json')
         const raw = JSON.stringify({
@@ -97,27 +103,27 @@ export default {
           body: raw,
           redirect: 'follow'
         }
-        fetch(endpoint, requestOptions)
-          .then(response => response.json())
-          .then(result => console.log('Success:', result))
-          .catch(error => console.log('error', error))
+        const response = await fetch(endpoint, requestOptions)
+        await this.handleResponse(response)
+      }
+    },
+    async handleResponse (response) {
+      if (response.ok) {
+        this.$emit('created', response.headers.get('location'))
+        document.getElementById('close-offcanvas').click()
+      } else if (response.status === 400) {
+        response = await response.json()
+        response.errors.forEach(error => {
+          this.serverValidationMessages.push(error.defaultMessage)
+        })
+      } else {
+        this.serverValidationMessages.push('Unknown error occurred')
       }
     },
     validate () {
-      let valid = true
-      const forms = document.querySelectorAll('.needs-validation')
-      Array.prototype.slice.call(forms)
-        .forEach(function (form) {
-          form.addEventListener('submit', function (event) {
-            if (!form.checkValidity()) {
-              valid = false
-              event.preventDefault()
-              event.stopPropagation()
-            }
-            forms.classList.add('was-validated')
-          }, false)
-        })
-      return valid
+      const form = document.getElementById('todo-create-form')
+      form.classList.add('was-validated')
+      return form.checkValidity()
     }
   }
 }

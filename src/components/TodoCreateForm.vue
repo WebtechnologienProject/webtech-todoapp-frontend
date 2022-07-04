@@ -80,7 +80,7 @@ export default {
       if (valid) {
         // const baseUrl = process.env.VUE_APP_BACKEND_BASE_URL
         // const endpoint = baseUrl + '/api/todoo
-        const endpoint = 'http://localhost:8080/api/todo'
+        const endpoint = process.env.VUE_APP_BACKEND_BASE_URL
         console.log('New todo Created')
         const myHeaders = new Headers()
         myHeaders.append('Content-Type', 'application/json')
